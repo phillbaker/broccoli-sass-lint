@@ -171,7 +171,7 @@ SassLinter.prototype.processString = function(content, relativePath) {
 
   if (!this.disableTestGenerator) {
     // Return generated test
-    return this.testGenerator(relativePath, this.formatErrors([lint]));
+    return this.testGenerator(relativePath, lint.errorCount);
   }
 
   return content; // Return unmodified string
@@ -234,14 +234,10 @@ be included and run by PhantomJS. If there are any errors, the test will fail
 and print the reasons for failing. If there are no errors, the test will pass.
 */
 
-SassLinter.prototype.testGenerator = function(relativePath, errors) {
-  if (errors) {
-    errors = this.escapeErrorString('\n' + errors);
-  }
-
+SassLinter.prototype.testGenerator = function(relativePath, errorCount) {
   return "QUnit.module('Sass Lint - " + path.dirname(relativePath) + "');\n" +
          "QUnit.test('" + relativePath + " should pass sass-lint', function(assert) {\n" +
-         "  assert.ok(" + !errors + ", '" + relativePath + " should pass sass-lint." + errors + "');\n" +
+         "  assert.ok(" + (errorCount === 0) + ", '" + relativePath + " should pass sass-lint." + errorCount + "');\n" +
          "});\n";
 };
 

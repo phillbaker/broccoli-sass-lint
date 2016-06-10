@@ -34,6 +34,7 @@
     "findup-sync": "^0.3.0",
     "js-string-escape": "1.0.0",
     "minimatch": "^3.0.0",
+    "qunitjs": ">= 0.0.1",
     "sass-lint": "^1.3.1"
   }
 }

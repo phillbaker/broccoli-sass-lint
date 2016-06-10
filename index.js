@@ -6,6 +6,9 @@ var findupSync = require('findup-sync');
 var linter = require('sass-lint');
 var path = require('path');
 
+// load qunit into the global namespace if necessary
+global.QUnit = global.QUnit || require('qunitjs');
+
 var jsStringEscape = require('js-string-escape');
 var minimatch = require('minimatch');
 
@@ -236,9 +239,9 @@ SassLinter.prototype.testGenerator = function(relativePath, errors) {
     errors = this.escapeErrorString('\n' + errors);
   }
 
-  return "module('Sass Lint - " + path.dirname(relativePath) + "');\n" +
-         "test('" + relativePath + " should pass sass-lint', function() {\n" +
-         "  ok(" + !errors + ", '" + relativePath + " should pass sass-lint." + errors + "');\n" +
+  return "QUnit.module('Sass Lint - " + path.dirname(relativePath) + "');\n" +
+         "QUnit.test('" + relativePath + " should pass sass-lint', function(assert) {\n" +
+         "  assert.ok(" + !errors + ", '" + relativePath + " should pass sass-lint." + errors + "');\n" +
          "});\n";
 };
 
